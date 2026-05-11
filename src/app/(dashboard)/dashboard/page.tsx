@@ -29,12 +29,12 @@ export default function DashboardRedirect() {
         return router.push('/PLAYER')
       }
 
-      // Redirection selon le rôle (on utilise les paths définis dans (dashboard)/[role])
+      // Redirection selon le rôle
       const roleMap: Record<string, string> = {
-        ACADEMY_ADMIN: '/COACH', // Ou un dashboard admin spécifique si existant
-        COACH: '/COACH',
-        PLAYER: '/PLAYER',
-        PARENT: '/PARENT',
+        ACADEMY_ADMIN: '/dashboard/COACH', 
+        COACH: '/dashboard/COACH',
+        PLAYER: '/dashboard/PLAYER',
+        PARENT: '/dashboard/PARENT',
       }
 
       const targetPath = roleMap[profile.role] || '/PLAYER'

@@ -1,18 +1,31 @@
 import Link from 'next/link'
-import { FootballIcon } from '@/components/icons/FootballIcon' // To be created
+import { FootballIcon } from '@/components/icons/FootballIcon'
+import { NotificationBell } from '@/components/common/NotificationBell'
 
 export const Navbar = () => {
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between px-4 md:px-8">
-        <Link href="/" className="flex items-center space-x-2">
-          <FootballIcon className="h-8 w-8 text-green-600" />
-          <span className="font-bold text-xl hidden md:inline-block">Racing Club Academy</span>
+    <nav className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md">
+      <div className="container mx-auto flex h-20 items-center justify-between px-6">
+        <Link href="/" className="flex items-center space-x-3 transition-transform hover:scale-105">
+          <div className="bg-primary p-2 rounded-xl sport-shadow">
+            <FootballIcon className="h-8 w-8 text-white" />
+          </div>
+          <div className="flex flex-col">
+            <span className="font-display font-bold text-xl leading-none">RACING CLUB</span>
+            <span className="text-[10px] uppercase tracking-[0.2em] text-primary font-bold">Football Academy</span>
+          </div>
         </Link>
-        <div className="flex items-center space-x-6 text-sm font-medium">
-          <Link href="/squad" className="hover:text-green-600 transition-colors">Effectif</Link>
-          <Link href="/schedule" className="hover:text-green-600 transition-colors">Agenda</Link>
-          <Link href="/login" className="px-4 py-2 rounded-full bg-green-600 text-white hover:bg-green-700 transition-colors">Espace Pro</Link>
+        
+        <div className="hidden md:flex items-center space-x-8">
+          <Link href="/squad" className="text-sm font-bold uppercase tracking-wider hover:text-primary transition-colors">Effectif</Link>
+          <Link href="/schedule" className="text-sm font-bold uppercase tracking-wider hover:text-primary transition-colors">Agenda</Link>
+          
+          <div className="flex items-center space-x-4 ml-4">
+            <NotificationBell userId="demo-user" />
+            <Link href="/login" className="bg-primary text-white px-6 py-2.5 rounded-xl font-bold text-sm uppercase tracking-wide hover:bg-green-800 transition-all active:scale-95 shadow-lg shadow-green-900/20">
+              Espace Pro
+            </Link>
+          </div>
         </div>
       </div>
     </nav>

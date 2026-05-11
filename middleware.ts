@@ -40,7 +40,7 @@ export async function middleware(request: NextRequest) {
     const url = request.nextUrl.clone()
 
     const publicPaths = ['/', '/squad', '/schedule', '/login', '/auth/callback']
-    const isPublicPath = publicPaths.some(path => url.pathname === path)
+    const isPublicPath = publicPaths.some(path => url.pathname === path) || url.pathname.startsWith('/auth/')
     const isAsset = url.pathname.match(/\.(svg|png|jpg|jpeg|gif|webp|ico|css|js)$/)
 
     if (!user && !isPublicPath && !isAsset && !url.pathname.startsWith('/api')) {

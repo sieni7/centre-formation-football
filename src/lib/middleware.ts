@@ -6,16 +6,24 @@ export async function updateSession(request: NextRequest) {
     request,
   })
 
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.error('Middleware: Missing Supabase environment variables')
+    return supabaseResponse
+  }
+
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: {
         getAll() {
           return request.cookies.getAll()
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
           supabaseResponse = NextResponse.next({
             request,
           })
@@ -32,17 +40,13 @@ export async function updateSession(request: NextRequest) {
 
   const url = request.nextUrl.clone()
 
-  // 1. Protected routes: /dashboard
-  if (url.pathname.startsWith('/(dashboard)') && !user) {
-    url.pathname = '/login'
-    return NextResponse.redirect(url)
-  }
+  // 1. Protected routes: Any path that is not public or auth
+  const publicPaths = ['/', '/squad', '/schedule', '/login']
+  const isPublicPath = publicPaths.includes(url.pathname)
+  const isAsset = url.pathname.match(/\.(svg|png|jpg|jpeg|gif|webp|ico)$/)
 
-  // 2. Role-based redirection (simplistic for now)
-  if (user && url.pathname === '/') {
-    // We would fetch the role from the profile here
-    // For now, redirect to a generic dashboard or player dashboard
-    url.pathname = '/PLAYER'
+  if (!user && !isPublicPath && !isAsset) {
+    url.pathname = '/login'
     return NextResponse.redirect(url)
   }
 
